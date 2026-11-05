@@ -1,0 +1,23 @@
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables & secrets
+.env
+
+backend_fastAPI/docs 
+
+# Vector databases / ChromaDB local storage
+pinecone/
+vector_store/
+
+# React frontend (for later)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
