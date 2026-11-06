@@ -12,6 +12,7 @@ __pycache__/
 .env
 
 backend_fastAPI/docs 
+CLAUDE.md
 
 # Vector databases / ChromaDB local storage
 pinecone/
