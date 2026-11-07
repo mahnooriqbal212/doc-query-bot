@@ -20,6 +20,12 @@ class InvalidLinkError(AppError):
     code = "INVALID_LINK"
 
 
+class InvalidFileError(AppError):
+    status_code = 400
+    code = "INVALID_FILE"
+    message = "Please upload a PDF file."
+
+
 class DocumentLoadError(AppError):
     status_code = 422
     code = "DOCUMENT_LOAD_ERROR"
@@ -30,10 +36,10 @@ class DocumentTooLargeError(AppError):
     code = "DOCUMENT_TOO_LARGE"
 
 
-class NoDocumentError(AppError):
-    status_code = 409
-    code = "NO_DOCUMENT"
-    message = "No document is loaded yet. Please add a documentation link first."
+class DocumentNotFoundError(AppError):
+    status_code = 404
+    code = "DOCUMENT_NOT_FOUND"
+    message = "This document was not found. Please add a documentation link first."
 
 
 class SessionNotFoundError(AppError):
