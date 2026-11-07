@@ -1,10 +1,12 @@
+from fastapi.openapi.docs import get_swagger_ui_html
+
 import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 
 from app.api.routes import chat, documents, health
 from app.core.config import settings
@@ -30,6 +32,7 @@ app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
     lifespan=lifespan,
+    docs_url=None,  # we serve our own dark /docs below
 )
 
 # CORS (for the React frontend)
@@ -86,3 +89,18 @@ async def unexpected_error_handler(request: Request, exc: Exception):
 app.include_router(health.router)
 app.include_router(documents.router)
 app.include_router(chat.router)
+
+
+# serving our own dark /docs below
+DARK_CSS = """
+<style>
+  html { background: #fff; filter: invert(90%) hue-rotate(180deg); }
+  img, .microlight { filter: invert(100%) hue-rotate(180deg); }
+</style>
+"""
+
+@app.get("/docs", include_in_schema=False)
+def dark_docs():
+    page = get_swagger_ui_html(openapi_url=app.openapi_url, title=f"{app.title} - Docs")
+    html = page.body.decode().replace("</head>", DARK_CSS + "</head>")
+    return HTMLResponse(html)
